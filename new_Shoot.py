@@ -13,7 +13,7 @@ downIsDown = False
 spaceIsDown = False
 
 objects = []
-shipList = []
+# shipList = []
 bulletList = []
 
 screen = pygame.display.set_mode((640, 640))
@@ -24,27 +24,33 @@ pygame.display.set_caption("Ship Fighter 9000")
 '''
 Problems
 
-if bulletList gets to large collision with the circles will not be detected
-
 also just doesnt detect collision sometimes
 
-circles that have been hit and had the del function used on them are still in the objects list
+Only detects collision if there is one bullet 
 
 '''
 
 ### Methods
 
+# def getCollision(object):
+#     for num in range(len(bulletList)):
+#         if ((bulletList[num].x - object.x) * (bulletList[num].x - object.x)  + (bulletList[num].y - object.y) * (bulletList[num].y - object.y) < (bulletList[num].radius + object.radius) * (bulletList[num].radius + object.radius)):
+#             return True
+#         else:
+#             return False
+
 def getCollision(object):
-    for num in range(len(bulletList)):
-        
-        if ((bulletList[num].x - object.x) * (bulletList[num].x - object.x)  + (bulletList[num].y - object.y) * (bulletList[num].y - object.y) < (bulletList[num].radius + object.radius) * (bulletList[num].radius + object.radius)):
-            return True
-        else:
-            return False
+    for num in range(len(objects)):
+        if type(objects[num]) == Bullet:
+            if ((objects[num].x - object.x) * (objects[num].x - object.x)  + (objects[num].y - object.y) * (objects[num].y - object.y) < (objects[num].radius + object.radius) * (objects[num].radius + object.radius)):
+                return True
+            else:
+                return False
+
 
 def updater(object):
-    object.display()
     object.update()
+    object.display()
 
 ### Ship Class
 
@@ -71,7 +77,6 @@ class Ship:
             if downIsDown == True:
                 self.y += self.accel
         else:
-            
             self.y += 1
 
 ### Bullet Class     
@@ -93,7 +98,8 @@ class Bullet:
 ### Creating Objects
 
 for num in range(0, 10):
-    shipList.append(Ship(random.randint(10, 500), 100, False))
+    # shipList.append(Ship(random.randint(10, 500), 100, False))
+    objects.append(Ship(random.randint(10, 500), 100, False))
 
 player = Ship(300, 600, True)
 
@@ -142,19 +148,29 @@ while running:
        
     ### Checks Collision
 
-    for num in range(len(shipList)):
-        if getCollision(shipList[num]):
-            print('deleteing a circle')
-            objects.remove(shipList[num])
-            del shipList[num]
-            shipList.append(Ship(random.randint(10, 500), 100, False))
-            break
+    # for num in range(len(shipList)):
+    #     if getCollision(shipList[num]):
+    #         print('deleting a circle')
+    #         objects.remove(shipList[num])
+    #         del shipList[num]
+    #         shipList.append(Ship(random.randint(10, 500), 100, False))
+    #         break
+
+    for num in range(len(objects)):
+        if type(objects[num]) == Ship:
+            if getCollision(objects[num]):
+                print('deleting circle')
+                objects.remove(objects[num])
+                break
+
+
 
     ### Deletes Bullets
 
     for num in range(len(bulletList)):
         if bulletList[num].y < 10:
             print('bullet out of bounds')
+            objects.remove(bulletList[num])
             del bulletList[num]
             break
 
