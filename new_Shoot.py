@@ -3,6 +3,10 @@ import os,sys,math,pygame.mixer,pygame,random
 pygame.init()
 pygame.font.init()
 
+
+backGround = pygame.image.load('water.png')
+spaceShip = pygame.image.load('alien.png')
+rocket = pygame.image.load('rocket.png')
 running = True
 red = 250, 0, 0
 white = 0, 0, 0
@@ -13,7 +17,7 @@ downIsDown = False
 spaceIsDown = False
 
 objects = []
-# shipList = []
+
 bulletList = []
 
 screen = pygame.display.set_mode((640, 640))
@@ -24,20 +28,11 @@ pygame.display.set_caption("Ship Fighter 9000")
 '''
 Problems
 
-also just doesnt detect collision sometimes
-
-Only detects collision if there is one bullet 
+Zero
 
 '''
 
 ### Methods
-
-# def getCollision(object):
-#     for num in range(len(bulletList)):
-#         if ((bulletList[num].x - object.x) * (bulletList[num].x - object.x)  + (bulletList[num].y - object.y) * (bulletList[num].y - object.y) < (bulletList[num].radius + object.radius) * (bulletList[num].radius + object.radius)):
-#             return True
-#         else:
-#             return False
 
 def getCollision(object):
     for num in range(len(objects)):
@@ -71,13 +66,15 @@ class Ship:
     def __init__(self, x, y, controllable):
         self.x = x
         self.y = y
-        self.accel = 15.0
-        self.radius = 10
+        self.accel = 25.0
+        self.radius = 35
         self.controllable = controllable
         objects.append(self)
 
     def display(self):
-        pygame.draw.circle(screen, red, (int(self.x), int(self.y)), 10, 1)
+        # pygame.draw.circle(screen, red, (int(self.x), int(self.y)), 35, 0)
+        screen.blit(spaceShip, ((int(self.x)-35, int(self.y)-35)))
+        
         
     def update(self):
         if self.controllable:
@@ -102,8 +99,8 @@ class Bullet:
         objects.append(self)
         
     def display(self):
-        pygame.draw.circle(screen, red, (int(self.x), int(self.y)), 5, 1)
-        
+        # pygame.draw.circle(screen, red, (int(self.x), int(self.y)), 5, 0)
+        screen.blit(rocket, ((int(self.x)-15, int(self.y)-15)))
     def update(self):
         self.y -= 30
        
@@ -111,7 +108,7 @@ class Bullet:
 ### Creating Objects
 
 for num in range(0, 10):
-    # shipList.append(Ship(random.randint(10, 500), 100, False))
+    
     objects.append(Ship(random.randint(10, 500), 100, False))
 
 player = Ship(300, 600, True)
@@ -131,28 +128,29 @@ while running:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT or event.key == pygame.K_a:
                 leftIsDown = True
-            if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
+            elif event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                 rightIsDown = True
-            if event.key == pygame.K_UP or event.key == pygame.K_w:
+            elif event.key == pygame.K_UP or event.key == pygame.K_w:
                 upIsDown = True
-            if event.key == pygame.K_DOWN or event.key == pygame.K_s:
+            elif event.key == pygame.K_DOWN or event.key == pygame.K_s:
                 downIsDown = True
-            if event.key == pygame.K_f:
-                bulletList.append(Bullet())
+            elif event.key == pygame.K_SPACE:
+                Bullet()
 
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == pygame.K_a:
                 leftIsDown = False
-            if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
+            elif event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                 rightIsDown = False
-            if event.key == pygame.K_UP or event.key == pygame.K_w:
+            elif event.key == pygame.K_UP or event.key == pygame.K_w:
                 upIsDown = False
-            if event.key == pygame.K_DOWN or event.key == pygame.K_s:
+            elif event.key == pygame.K_DOWN or event.key == pygame.K_s:
                 downIsDown = False
     
     ### Creating Game
     
     screen.fill(white)
+    screen.blit(backGround, (0, 0))
     
     ### Calls The Updater
 
