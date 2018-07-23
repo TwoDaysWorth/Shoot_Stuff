@@ -100,7 +100,7 @@ class Bullet:
         
     def display(self):
         # pygame.draw.circle(screen, red, (int(self.x), int(self.y)), 5, 0)
-        screen.blit(rocket, ((int(self.x)-15, int(self.y)-15)))
+        screen.blit(rocket, ((int(self.x) - 5, int(self.y))))
     def update(self):
         self.y -= 30
        
