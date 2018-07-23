@@ -44,13 +44,26 @@ def getCollision(object):
         if type(objects[num]) == Bullet:
             if ((objects[num].x - object.x) * (objects[num].x - object.x)  + (objects[num].y - object.y) * (objects[num].y - object.y) < (objects[num].radius + object.radius) * (objects[num].radius + object.radius)):
                 return True
-            else:
-                return False
+    return False
 
 
 def updater(object):
     object.update()
     object.display()
+
+
+def determineQualification (obj):
+    if type(obj) == Ship:
+        if getCollision(obj):
+            return True
+        else:
+            return False
+    elif type(obj) == Bullet:
+        if obj.y < 10:
+            return True
+        else:
+            return False
+    return False
 
 ### Ship Class
 
@@ -73,7 +86,7 @@ class Ship:
             if rightIsDown == True:
                 self.x += self.accel
             if upIsDown == True:
-                self.y -= self.accelf
+                self.y -= self.accel
             if downIsDown == True:
                 self.y += self.accel
         else:
@@ -139,7 +152,7 @@ while running:
     
     ### Creating Game
     
-    screen.fill(white) 
+    screen.fill(white)
     
     ### Calls The Updater
 
@@ -148,31 +161,6 @@ while running:
        
     ### Checks Collision
 
-    # for num in range(len(shipList)):
-    #     if getCollision(shipList[num]):
-    #         print('deleting a circle')
-    #         objects.remove(shipList[num])
-    #         del shipList[num]
-    #         shipList.append(Ship(random.randint(10, 500), 100, False))
-    #         break
+    objects = [x for x in objects if not determineQualification (x)]
 
-    for num in range(len(objects)):
-        if type(objects[num]) == Ship:
-            if getCollision(objects[num]):
-                print('deleting circle')
-                objects.remove(objects[num])
-                break
-
-
-
-    ### Deletes Bullets
-
-    for num in range(len(bulletList)):
-        if bulletList[num].y < 10:
-            print('bullet out of bounds')
-            objects.remove(bulletList[num])
-            del bulletList[num]
-            break
-
-    pygame.display.flip()      
-
+    pygame.display.flip()
