@@ -117,7 +117,7 @@ player = Ship(300, 600, True)
 
 while running:
     clock.tick(144)
-    pygame.time.delay(100)
+    pygame.time.delay(25)
 
     ### Key Inputs
 
