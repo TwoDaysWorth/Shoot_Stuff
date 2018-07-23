@@ -35,7 +35,7 @@ circles that have been hit and had the del function used on them are still in th
 ### Methods
 
 def getCollision(object):
-    for num in range(0, len(bulletList)):
+    for num in range(len(bulletList)):
         
         if ((bulletList[num].x - object.x) * (bulletList[num].x - object.x)  + (bulletList[num].y - object.y) * (bulletList[num].y - object.y) < (bulletList[num].radius + object.radius) * (bulletList[num].radius + object.radius)):
             return True
@@ -145,6 +145,7 @@ while running:
     for num in range(len(shipList)):
         if getCollision(shipList[num]):
             print('deleteing a circle')
+            objects.remove(shipList[num])
             del shipList[num]
             shipList.append(Ship(random.randint(10, 500), 100, False))
             break
